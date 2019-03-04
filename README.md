@@ -11,7 +11,7 @@
 
  ### Here show the score of each lab which consist of code and report
  
- * The code and report of Gomoku was deleted mistakly.
+ * The code and report of Gomoku was deleted accidently :imp:.
  
  |Project|Code Score|Report Score|
  --------|------------|--------------|
