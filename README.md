@@ -9,6 +9,7 @@
 
  ### Here show the score of each lab which consist of code and report
  |Project|Code Score|Report Score|
+ --------|------------|--------------|
  |Gomoku|92/120|95/100|
  |CARP|83/120(20% off)|90/100|
  |IMP|98/120|87/100|
