@@ -1,0 +1,258 @@
+\documentclass[conference,compsoc]{IEEEtran}
+\usepackage{CJK}
+\ifCLASSOPTIONcompsoc
+  \usepackage[nocompress]{cite}
+\else
+  \usepackage{cite}
+\fi
+\ifCLASSINFOpdf
+\else
+\fi
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\usepackage{url}
+\hyphenation{op-tical net-works semi-conduc-tor}
+\begin{document}
+\title{CARP Solver}
+\author{\IEEEauthorblockN{Peijun Ruan  11610214}\\
+\IEEEauthorblockA{School of Computer Science and Engineering\\
+Southern University of Science and Technology\\
+Email: 11610214@mail.sustc.edu.cn}}
+\maketitle
+\IEEEpeerreviewmaketitle
+\section{Preliminaries}
+\subsection{Introduction}
+ The Capacitated Arc Routing Problem(CARP) problem is a classical combinatorial optimization problem.In this project, the problem can be described as: given a strong connected graph,each edge has a cost,and some of edges need to be serviced.Here are some number of vehicles to satisfy the demand which all start at a specific position(depot) and after finish its task, it will go back that position.what should be noticed is that each edge with demand should only be serviced once and each vehicle has a capacity to limit the demand it can satisfy.
+ 
+ So in this problem, there are three constraints:
+ \begin{itemize}
+ \item each vehicle should start from depot and go back depot at last
+ \item each demand edge should be serviced and serviced only for once
+ \item the total demand of edges a vehicle serviced should not exceed its capacity
+ \end{itemize}
+ 
+\subsection{Software}
+
+\subsection{Algorithm}
+
+\section{Methodology}
+
+\subsection{Representation}
+
+\begin{itemize}
+\item \textbf{Chessboard}: a numpy two-dimensional array.
+\item \textbf{List of candidate position}: list of tuple.
+\item \textbf{Output position}: the last tuple in the candidate list.
+\item \textbf{Chess color}: the color of stone:
+    \begin{itemize}
+        \item \large color\_white: use 1 to represent
+        \item color\_black: use -1 to represent
+    \end{itemize}
+\item \textbf{Chess patterns}[1]:
+    \begin{itemize}
+        \item \large five:300000 pts
+        \item live\_four:100000 pts
+        \item cut\_four:30000 pts
+        \item live\_three:15000 pts
+        \item cut\_three:5000 pts
+        \item live\_two:3000 pts
+        \item cut\_two:1000 pts
+    \end{itemize}
+\end{itemize}
+\subsection{Architecture}
+Here are all functions in Python file gobang with pesudocode format.
+\begin{itemize}
+\item \textbf{Given}:
+    \begin{itemize}
+        \item \_\_initial\_\_:initial the AI.
+        \item go:read a chessboard and output the decision.
+    \end{itemize}
+\item \textbf{Self define}:
+    \begin{itemize}
+        \item get\_candidate\_simple: find all the valid position.
+        \item check\_neighbors: check whether in a 4*4 field exists a stone.
+        \item get\_score: count the score if AI places stone here.
+        \item get\_stone\_around: count stones of mine and opponent's.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Detail of Algorithm}
+Here show the psudocode of all the functions. \\
+%\vspace{-20pt}
+\begin{itemize}
+\item \textbf{check\_neighbors:}Use transversal to search the chessboard, if there is no stone around this
+position, it is useless to place a stone here
+\end{itemize}
+%\vspace{-30pt}
+\begin{algorithm}
+    \caption{check whether in a 4*4 field exists a stone.}
+    \begin{algorithmic}[1]
+        \Require $tuple$ index,$np.array$ chessboard
+        \Ensure $true \ or false$
+        \Function{check\_neighbors}{$chessboard,index$} \\
+         $ x,y \gets index[0],index[1]$
+        \For{$i=-3 \to 3$}
+            \For{$j=-3 \to 3$}
+                \If{$i==0 \& j==0$}
+                \State continue
+                \ElsIf{$0<=x+i<=14\ \& \ 0<=y+j<=14\ \& \ (x+i,y+j)\ is\ empty $}
+                \State \Return{$true$}
+                \EndIf
+            \EndFor
+        \EndFor
+        \State \Return{$false$}
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{itemize}
+\item \textbf{get\_candidate\_simple:}Search the whole chessboard to find all valid position
+\end{itemize}
+
+\begin{algorithm}
+    \caption{find all the valid position.}
+    \begin{algorithmic}[1]
+        \Require $np.array$ chessboard
+        \Ensure $list$ candidatelist
+        \Function{get\_candidate\_simple}{$chessboard$} \\
+        $list \gets [ \ ]$
+        \For{$i=0 \to 14$}
+            \For{$j=0 \to 14$}
+                \If{$chessboard[i][j] \ is \  empty \, \newline
+                \& \, check\_neighbors(chessboard,(i,j))$}
+                \State $list.add [i,j]$
+                \EndIf
+            \EndFor
+        \EndFor
+        \State \Return{$candidatelist$}
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+%\vspace{-20pt}
+\begin{itemize}
+\item \textbf{get\_score:} Check all the chess pattern if place a stone here to measure the importance of this position
+\end{itemize}
+\quad \newline
+%\vspace{10pt}
+\begin{algorithm}
+    \caption{calculate the score of chess pattern.}
+    \begin{algorithmic}[1]
+        \Require $np.array$ chessboard,$tuple$ index,$int$ color
+        \Ensure $int$ score
+        \Function{get\_score}{$chessboard,index,color$} \\
+        $x,y \gets index[0],index[1]$ \\
+        $score \gets 0$ \\
+        $pattern\_list \gets \{ \ \}$ \\
+        $position \gets \{left\_to\_right,up\_to\_down, \newline
+        leftdown\_to\_rightup,leftup\_to\_rightdown\}$
+        \For{$i$ \ in \  $position$}
+            \State find chess pattern $p$ by searching $i$ at $(x,y)$
+            \If{$p \ in \ Chess \ patterns$}
+                \State $score += p's \ score$
+                \State $pattern\_list[p]+=1$ \\ // record the number and type of pattern
+            \EndIf
+        \EndFor
+        \State \Return $score,pattern\_list$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+%\vspace{-10pt}
+\begin{itemize}
+\item \textbf{get\_stone\_around:} Search how many stone around here. more concentrated the stones are located , more likely to get advantage
+\end{itemize}
+%\vspace{10pt}
+\begin{algorithm}
+    \caption{count stones of mine and opponent's.}
+    \begin{algorithmic}[1]
+        \Require $np.array$ chessboard,$tuple$ index, $int$ color
+        \Ensure $enemy$,$mine$
+        \Function{get\_stone\_around}{$chessboard,index, \newline
+        color$} \\
+        $x,y \gets index[0],index[1]$ \\
+        $enemy,mine \gets 0$
+        \For{$i=-1 \to 1$}
+            \For{$j=-1 \to 1$}
+                \If{$i==0 \ \& \ j==0$}
+                \State continue
+                \ElsIf{$14>=x+i>=0 \ \& \ 14>=y+j>=0$}
+                    \If{$chessboard[x+i][y+j]==-color$}
+                    \State enemy+=1
+                    \ElsIf
+                    \State \quad mine+=1
+                    \EndIf
+                \EndIf
+            \EndFor
+        \EndFor
+        \State \Return $enemy,mine$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+\newpage
+\begin{itemize}
+\item \textbf{go:} Given a chessboard, search the whole board to determine which position will get the largest benefit.
+\end{itemize}
+\begin{algorithm}
+    \caption{output the final decision position.}
+    \begin{algorithmic}[1]
+        \Require $np.array$ chessboard
+        \Ensure the last tuple in candidatelist
+        \Function{go}{$chessboard$}  \\
+        $list \gets get\_candidate\_simple(chessboard)$ \\
+        $maxscore \gets -1$
+        $candidatelist \gets [ \ ]$
+        \For{$ i \ in list$}
+            \State $attack,attack\_pattern \gets get\_score(chessboard,i,color)$
+            \State $defence,defence\_pattern \gets get\_score(chessboard,i,-color)$
+            \If{$attack\_pattern \ and \ defence\_pattern \newline \ can \ consist \ of \ some \ special \ pattern$}
+                \State add extra score for those special chess pattern to attack and defence
+            \EndIf
+            \State $value \gets attack+defence$
+            \If{$value>maxscore$}
+                \State $maxscore \gets value$
+                \State $candidatelist.append(i)$
+            \EndIf
+        \EndFor
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+\section{Empirical Verification}
+For empirical verification, using code\_check\_test.py file to check whether the algorithm works and can give the right answer. The result shows my algorithm works well.
+
+\subsection{Design}
+The main function in this project is go() and I implement other four functions to assist go() to meet the goal that give a decision where to place the next stone.And among the four functions(except go function), get\_stone\_around is an extra function aims at reducing useless computing and decrease the running time.
+\subsection{Data and data structure}
+Data used in this project is some chess\_log files to improve the details and fix bugs.
+Data structures used include tuple,list,dictionary,array.
+\subsection{Performance}
+Instead of using game tree, this AI is simply designed using whole-chessboard-transversal.The time complexity will not be very high,which is about $\mathcal{O}(n^2)$.This AI can make decision very quickly compared to game tree algorithm.
+\subsection{Result}
+See the score and rank on website \textbf{10.20.96.148}. The score suggests my algorithm works not bad.
+\subsection{Analysis}
+This AI project is just a simple realization and not even use some advanced algorithms like game tree, Monte Carlo tree. Compared with those AI, this only consider a few situation. Thus, it may perform not so well as those using game tree and it can not handle some special opening like D4,I7. But it is also unreal to implement an AI that can deal with all possible situation by using the tools and data in our hands. In a word, this kind of simple AI's performance absolutely depends on how well you know about Gomoku, and it reminds me that it is a long way to program a true AI.
+\ifCLASSOPTIONcompsoc
+
+  \section*{Acknowledgments}
+I would like to thank my classmates Kai Lin and Ziyuan Ye who give me inspiration on the AI's logic and inform me some knowledge on Gomoku game, which helps me improve the AI's performance a lot.Last I would like to thank SA who will check my codes and reports.
+\else
+  \section*{Acknowledgment}
+\fi
+
+\bibliographystyle{IEEEtran}
+\begin{thebibliography}{1}
+\bibitem{reference}
+\begin{CJK*}{GBK}{song}
+Cnblogs.com.(2018).五子棋AI的思路-我是老邱-博客园.[online]Available at: \\ https://www.cnblogs.com/songdechiu/p/5768999.html [Accessed 27 Oct. 2018].
+\end{CJK*}
+\end{thebibliography}
+
+
+\end{document}
+
+

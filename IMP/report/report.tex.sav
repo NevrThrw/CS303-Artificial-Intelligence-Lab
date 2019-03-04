@@ -1,0 +1,93 @@
+\documentclass[conference,compsoc]{IEEEtran}
+\usepackage{CJK}
+\ifCLASSOPTIONcompsoc
+  \usepackage[nocompress]{cite}
+\else
+  \usepackage{cite}
+\fi
+\ifCLASSINFOpdf
+\else
+\fi
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{booktabs}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\usepackage{url}
+\hyphenation{op-tical net-works semi-conduc-tor}
+\begin{document}
+\title{Influence Maximization}
+\author{\IEEEauthorblockN{Peijun Ruan  11610214}\\
+\IEEEauthorblockA{School of Computer Science and Engineering\\
+Southern University of Science and Technology\\
+Email: 11610214@mail.sustc.edu.cn}}
+\maketitle
+\IEEEpeerreviewmaketitle
+\section{Preliminaries}
+\subsection{Introduction}
+
+\subsection{Software}
+
+
+\subsection{Algorithm}
+
+\section{Methodology}
+
+\subsection{Representation}
+
+
+
+\subsection{Architecture}
+
+
+\subsection{Detail of Algorithm}
+
+
+\section{Empirical Verification}
+
+
+\subsection{Design}
+
+\subsection{Data and data structure}
+
+\subsection{Performance}
+
+\subsection{Result}
+
+\subsection{Analysis}
+
+
+
+
+\ifCLASSOPTIONcompsoc
+
+  \section*{Acknowledgments}
+\else
+
+  \section*{Acknowledgment}
+\fi
+
+
+
+
+
+
+
+
+\bibliographystyle{IEEEtran}
+
+\begin{thebibliography}{1}
+\bibitem{reference}
+Lv, J., Guo, J., Yang, Z., Zhang, W., \& Jocshi, A. (2014). Improved Algorithms OF CELF and CELF++ for Influence Maximization. Journal Of Engineering Science And Technology Review, 7(3), 32-38. doi: 10.25103/jestr.073.05
+\bibitem{reference}
+Kempe, D. , Kleinberg, J. , \& Tardos, ¨¦va. (2003). [acm press the ninth acm sigkdd international conference - washington, d.c. (2003.08.24-2003.08.27)] proceedings of the ninth acm sigkdd international conference on knowledge discovery and data mining, - kdd \"03 - maximizing the spread of influence through a social network. 137.
+\bibitem{reference}
+Goyal, A., Lu, W., \& Lakshmanan, L. V. (2011, March). Celf++: optimizing the greedy algorithm for influence maximization in social networks. In Proceedings of the 20th international conference companion on World wide web (pp. 47-48). ACM.
+\end{thebibliography}
+
+
+\end{document}
+
+
